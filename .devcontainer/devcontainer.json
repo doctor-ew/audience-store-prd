@@ -1,0 +1,28 @@
+{
+  "name": "audience-store-prd",
+  "image": "mcr.microsoft.com/devcontainers/universal:2",
+  "features": {
+    "ghcr.io/anthropics/devcontainer-features/claude-code:1.0.5": {}, // Claude Code CLI for advanced AI coding
+    "ghcr.io/devcontainers/features/node:1": { "version": "20" },   // Modern Node.js for JS/TS and Next.js
+    "ghcr.io/devcontainers/features/python:1": { "version": "3.12" }, // Python for various scripts and tools (uv for Spec-Kit)
+    "ghcr.io/rails/devcontainer/features/bun:1.0.2": {}, // Bun runtime for JS/TS, faster than n
+    "ghcr.io/devcontainers/features/github-cli:1": {},
+    "ghcr.io/devcontainers/features/git:1": {}
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "anthropic.claude-code",
+        "Google.geminicodeassist"
+      ]
+    }
+  },
+  "postCreateCommand": "bash -lc '\nset -euxo pipefail\n# 1) Verify Claude Code CLI\nclaude --version || true\n# 2) Install uv (for Spec-Kit) + put it on PATH (unmanaged to avoid shell profile edits in ephemeral containers)\ncurl -LsSf https://astral.sh/uv/install.sh | UV_UNMANAGED_INSTALL=$HOME/.local sh\nexport PATH=\"$HOME/.local/bin:$PATH\"\n# 3) Install Specify CLI from github/spec-kit via uv\n$HOME/.local/bin/uv tool install specify-cli --from git+https://github.com/github/spec-kit.git\n# 4) Install Gemini CLI globally (needed for /ide and agent mode)\nnpm i -g @google/gemini-cli\n# 5) First sanity checks (non-fatal if not logged in yet)\nspecify check || true\ngemini --version || true\nbun --version || true\nnode --version || true\npython --version || true\n'\n",
+  "postAttachCommand": {
+    "setup": "bash -lc 'echo -e \"\\nNext steps:\\n1) Run: gemini (and login)\\n2) Run: specify init . --ai gemini --here --force\\n3) In the Gemini sidebar chat, use: /constitution, /specify, /plan, /tasks, /implement\\n\"'"
+  },
+  "portsAttributes": {
+    "3000": { "label": "App", "onAutoForward": "openPreview" }
+  },
+  "forwardPorts": [3000]
+}
