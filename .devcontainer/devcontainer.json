@@ -2,21 +2,43 @@
   "name": "audience-store-prd",
   "image": "mcr.microsoft.com/devcontainers/javascript-node:20-bookworm",
   "features": {
-    "ghcr.io/anthropics/devcontainer-features/claude-code:1.0.5": {},
     "ghcr.io/devcontainers/features/node:1": { "version": "20" },
-    "ghcr.io/devcontainers/features/github-cli:1": {},
     "ghcr.io/devcontainers/features/git:1": {},
+    "ghcr.io/devcontainers/features/github-cli:1": {},
+    "ghcr.io/devcontainers/features/python:1": { "version": "3.12" },
     "ghcr.io/rails/devcontainer/features/bun:1.0.2": {}
-    /* Optional: add Python only if your workshop truly needs CLI tooling
-    ,"ghcr.io/devcontainers/features/python:1": { "version": "3.12" }
-    */
+  },
+  "containerEnv": {
+    "OPENAI_API_KEY": "${localEnv:OPENAI_API_KEY}",
+    "ANTHROPIC_API_KEY": "${localEnv:ANTHROPIC_API_KEY}",
+    "GEMINI_API_KEY": "${localEnv:GEMINI_API_KEY}",
+    "OPENROUTER_API_KEY": "${localEnv:OPENROUTER_API_KEY}"
   },
   "customizations": {
     "vscode": {
-      "extensions": ["anthropic.claude-code", "Google.geminicodeassist"]
+      "extensions": [
+        "anthropic.claude-code",
+        "Google.geminicodeassist",
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode"
+      ],
+      "mcp": {
+        "servers": {
+          "serena": {
+            "command": "npx",
+            "args": ["-y", "serena-mcp"],
+            "env": {
+              "OPENAI_API_KEY": "${localEnv:OPENAI_API_KEY}",
+              "ANTHROPIC_API_KEY": "${localEnv:ANTHROPIC_API_KEY}",
+              "GEMINI_API_KEY": "${localEnv:GEMINI_API_KEY}",
+              "OPENROUTER_API_KEY": "${localEnv:OPENROUTER_API_KEY}",
+              "SERENA_DEFAULT_MODEL": "gpt-4o-mini",
+              "SERENA_LOG_LEVEL": "info"
+            }
+          }
+        }
+      }
     }
   },
-  "postCreateCommand": "bash -lc 'set -euxo pipefail; claude --version || true; npm i -g @google/gemini-cli; bun --version || true; node --version'",
-  "portsAttributes": { "3000": { "label": "App", "onAutoForward": "openPreview" } },
-  "forwardPorts": [3000]
-}
+  "postCreateCommand": "bash -lc 'set -eu; node --version; python3 --version; bun --version || true; gh --version || true; corepack enable; corepack prepare pnpm@latest --activate; npm i -g @google/gemini-cli || true; curl -LsSf https://astral.sh/uv/install.sh | sh; echo \"export PATH=\\\"$HOME/.local/bin:$PATH\\\"\" >> ~/.bashrc; export PATH=\"$HOME/.local/bin:$PATH\"; uv tool install specify-cli --from git+https://github.com/github/spec-kit.git; specify --version; if [ -f package.json ]; then pnpm install || true; fi'",
+  "postAttachCommand": "bash -lc 'echo;
