@@ -1,31 +1,41 @@
-    # GEMINI.md
+# GEMINI.md
 
 ## Project Overview
 
-This is a Next.js project for a simple web application called "Audience Store". The application allows users to sign up, list items for sale, and purchase items from other users using a credit-based system. The project is intended as a teaching demo to illustrate the process of building a web application from a Product Requirements Document (PRD).
+This is a Next.js project called "Audience Store," a teaching demo app. The project is set up to use Next.js 15, React 19, and TypeScript. It also includes Tailwind CSS for styling. The project is configured to be developed in a GitHub Codespaces environment, using pnpm and Prisma with SQLite for the database.
 
-The project is built with the following technologies:
-
-*   **Framework:** Next.js (using the App Router)
-*   **Language:** TypeScript
-*   **Styling:** Tailwind CSS
-*   **Linting:** ESLint
+The goal of the project is to build a marketplace application with features like user accounts, a marketplace, and transactions. It also has a plan to incorporate AI for witty descriptions.
 
 ## Building and Running
 
-To get started with the project, you can use the following commands:
+To get started with the development environment, you'll need to have Node.js and pnpm installed.
 
-*   `npm install`: Installs the project dependencies.
-*   `npm run dev`: Starts the development server at `http://localhost:3000`.
-*   `npm run build`: Creates a production-ready build of the application.
-*   `npm run start`: Starts the production server.
-*   `npm run lint`: Lints the codebase to ensure code quality.
+**Running the development server:**
+
+```bash
+pnpm install
+pnpm dev
+```
+
+This will start the development server on [http://localhost:3000](http://localhost:3000).
+
+**Building the project:**
+
+```bash
+pnpm build
+```
+
+**Running tests:**
+
+```bash
+pnpm lint
+```
 
 ## Development Conventions
 
-The project follows the standard conventions for a Next.js application. Here are some key points:
-
-*   **Project Structure:** The main application code is located in the `audience-store/src/app` directory.
-*   **TypeScript:** The project uses TypeScript with strict mode enabled.
-*   **Styling:** Tailwind CSS is used for styling. Utility classes should be used whenever possible.
-*   **Linting:** ESLint is configured to enforce a consistent coding style.
+*   **Framework:** The project uses the Next.js App Router, and the source code is located in the `src/` directory.
+*   **Language:** The project is written in TypeScript.
+*   **Styling:** Tailwind CSS is used for styling.
+*   **Linting:** ESLint is set up to enforce code quality.
+*   **Package Manager:** pnpm is the package manager for this project.
+*   **Database:** The project uses Prisma with a SQLite database.
