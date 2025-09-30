@@ -23,4 +23,4 @@ Task: extend the DB for marketplace listings.
 
 Return the full updated files (schema.prisma and seed.ts). Do not run any commands.
 
-Remind the Human In The Loop (HITL) to run `npm run db:push && npm run db:seed`
+Remind the Human In The Loop (HITL) to run `npm run db:push && npm run db:seed` and offer to run it for them.

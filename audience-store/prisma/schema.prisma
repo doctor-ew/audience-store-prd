@@ -17,4 +17,20 @@ model User {
   credits     Int      @default(100)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+  itemsListed Item[] @relation("SellerItems")
+  itemsPurchased Item[] @relation("BuyerItems")
+}
+
+model Item {
+  id            String    @id @default(cuid())
+  name          String
+  description   String
+  price         Int
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  sellerId      String
+  purchasedById String? // null => still for sale
+
+  seller      User      @relation("SellerItems", fields: [sellerId], references: [id])
+  purchasedBy User?     @relation("BuyerItems", fields: [purchasedById], references: [id])
 }

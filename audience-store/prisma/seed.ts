@@ -21,6 +21,31 @@ async function main() {
       passwordHash: password,
     },
   });
+
+  // Create 3 unsold items for the seller
+  await prisma.item.createMany({
+    data: [
+      {
+        name: 'Item 1',
+        description: 'This is the first item',
+        price: 10,
+        sellerId: seller.id,
+      },
+      {
+        name: 'Item 2',
+        description: 'This is the second item',
+        price: 20,
+        sellerId: seller.id,
+      },
+      {
+        name: 'Item 3',
+        description: 'This is the third item',
+        price: 30,
+        sellerId: seller.id,
+      },
+    ],
+  });
+
   console.log({ buyer, seller });
 }
 main()
