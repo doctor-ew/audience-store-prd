@@ -1,4 +1,4 @@
-import { prisma } from '@/lib/prisma';
+import prisma from '@/lib/prisma';
 import { ItemCard } from '@/components/ItemCard';
 
 // Stub for session management - duplicated from actions.ts for page-level auth check

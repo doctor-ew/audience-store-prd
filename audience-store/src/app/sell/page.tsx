@@ -1,6 +1,6 @@
 import { redirect } from 'next/navigation';
 import { SellForm } from '@/components/SellForm';
-import { prisma } from '@/lib/prisma';
+import prisma from '@/lib/prisma';
 
 // Stub for session management - duplicated from actions.ts for page-level auth check
 async function getSession() {

@@ -1,5 +1,5 @@
 import { redirect } from 'next/navigation';
-import { prisma } from '@/lib/prisma';
+import prisma from '@/lib/prisma';
 
 // Stub for session management
 async function getSession() {
@@ -50,7 +50,7 @@ export default async function ProfilePage() {
         <h2 className="text-xl font-semibold mb-3">My Listings</h2>
         {
           userWithItems.itemsListed.length === 0 ? (
-            <p className="text-gray-500">You haven't listed any items yet.</p>
+            <p className="text-gray-500">You haven&apos;t listed any items yet.</p>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {userWithItems.itemsListed.map((item) => (
@@ -69,7 +69,7 @@ export default async function ProfilePage() {
         <h2 className="text-xl font-semibold mb-3">My Purchases</h2>
         {
           userWithItems.itemsPurchased.length === 0 ? (
-            <p className="text-gray-500">You haven't purchased any items yet.</p>
+            <p className="text-gray-500">You haven&apos;t purchased any items yet.</p>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {userWithItems.itemsPurchased.map((item) => (
