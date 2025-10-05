@@ -14,7 +14,8 @@
     "OPENROUTER_API_KEY": "${localEnv:OPENROUTER_API_KEY}",
     "SERENA_DEFAULT_MODEL": "gpt-4o-mini",
     "SERENA_LOG_LEVEL": "info",
-    "SERENA_INDEX_ON_ATTACH": "true"
+    "SERENA_INDEX_ON_ATTACH": "true",
+    "SERENA_AUTO_START": "true"
   },
   "customizations": {
     "vscode": {
@@ -52,6 +53,6 @@
   "forwardPorts": [3000, 24282],
   "portsAttributes": {
     "3000": { "label": "App", "onAutoForward": "openPreview" },
-    "24282": { "label": "Serena Dashboard", "onAutoForward": "openBrowser" }
+    "24282": { "label": "Serena Dashboard (/dashboard)", "onAutoForward": "openBrowser" }
   }
 }
