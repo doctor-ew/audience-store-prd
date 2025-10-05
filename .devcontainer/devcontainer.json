@@ -11,7 +11,10 @@
     "OPENAI_API_KEY": "${localEnv:OPENAI_API_KEY}",
     "ANTHROPIC_API_KEY": "${localEnv:ANTHROPIC_API_KEY}",
     "GEMINI_API_KEY": "${localEnv:GEMINI_API_KEY}",
-    "OPENROUTER_API_KEY": "${localEnv:OPENROUTER_API_KEY}"
+    "OPENROUTER_API_KEY": "${localEnv:OPENROUTER_API_KEY}",
+    "SERENA_DEFAULT_MODEL": "gpt-4o-mini",
+    "SERENA_LOG_LEVEL": "info",
+    "SERENA_INDEX_ON_ATTACH": "true"
   },
   "customizations": {
     "vscode": {
@@ -24,8 +27,13 @@
       "mcp": {
         "servers": {
           "serena": {
-            "command": "npx",
-            "args": ["-y", "serena-mcp"],
+            "command": "uvx",
+            "args": [
+              "--from", "git+https://github.com/oraios/serena",
+              "serena", "start-mcp-server",
+              "--context", "ide-assistant",
+              "--project", "/workspaces/audience-store-prd"
+            ],
             "env": {
               "OPENAI_API_KEY": "${localEnv:OPENAI_API_KEY}",
               "ANTHROPIC_API_KEY": "${localEnv:ANTHROPIC_API_KEY}",
@@ -41,8 +49,9 @@
   },
   "postCreateCommand": "bash .devcontainer/postCreate.sh",
   "postAttachCommand": "bash .devcontainer/postAttach.sh",
-  "forwardPorts": [3000],
+  "forwardPorts": [3000, 24282],
   "portsAttributes": {
-    "3000": { "label": "App", "onAutoForward": "openPreview" }
+    "3000": { "label": "App", "onAutoForward": "openPreview" },
+    "24282": { "label": "Serena Dashboard", "onAutoForward": "openBrowser" }
   }
 }
