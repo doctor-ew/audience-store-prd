@@ -9,6 +9,14 @@ pnpm config set store-dir /workspaces/.pnpm-store
 
 npm i -g @google/gemini-cli || true
 
+# Auto-install Claude CLI if key present
+if [ -n "$ANTHROPIC_API_KEY" ]; then
+  echo "✓ ANTHROPIC_API_KEY found - installing Claude CLI..."
+  npm i -g @anthropic-ai/claude-code || echo "⚠️  Claude CLI install failed, can retry later"
+else
+  echo "⏸️  Claude CLI skipped (no ANTHROPIC_API_KEY)"
+fi
+
 # Auto-install advanced tools if API keys are present (smart lazy-loading)
 echo "Checking for advanced tool API keys..."
 

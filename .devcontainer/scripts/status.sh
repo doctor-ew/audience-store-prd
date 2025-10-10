@@ -16,6 +16,16 @@ else
 fi
 echo
 
+# Claude CLI
+echo "Claude CLI:"
+if command -v claude &> /dev/null; then
+    echo "  ✅ Installed ($(claude --version 2>&1 | head -n1))"
+    [ -n "$ANTHROPIC_API_KEY" ] && echo "  ✅ API key configured" || echo "  ❌ API key missing"
+else
+    echo "  ⏸️  Not installed (run: .devcontainer/scripts/enable-claude.sh)"
+fi
+echo
+
 # OpenAI Codex CLI
 echo "OpenAI Codex CLI:"
 if command -v codex &> /dev/null; then
