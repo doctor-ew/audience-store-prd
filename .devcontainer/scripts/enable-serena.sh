@@ -7,7 +7,7 @@ echo "🎭 Enabling Serena MCP..."
 # Serena is already configured in devcontainer.json
 # This script validates the setup and provides usage info
 
-if grep -q "serena-mcp" ../.devcontainer/devcontainer.json; then
+if grep -q "serena-mcp" .devcontainer/devcontainer.json 2>/dev/null; then
     echo "✓ Serena MCP configured in devcontainer.json"
 else
     echo "❌ Serena MCP configuration not found"

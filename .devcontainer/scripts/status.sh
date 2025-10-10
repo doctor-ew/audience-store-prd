@@ -16,11 +16,15 @@ else
 fi
 echo
 
-# Codex
-echo "Codex CLI:"
+# OpenAI Codex CLI
+echo "OpenAI Codex CLI:"
 if command -v codex &> /dev/null; then
-    echo "  ✅ Installed"
-    [ -n "$ANTHROPIC_API_KEY" ] && echo "  ✅ API key configured" || echo "  ❌ API key missing"
+    echo "  ✅ Installed ($(codex --version 2>&1 | head -n1))"
+    if [ -n "$OPENAI_API_KEY" ]; then
+        echo "  ✅ API key configured"
+    else
+        echo "  ⚠️  No API key (can use ChatGPT account login)"
+    fi
 else
     echo "  ⏸️  Not installed (run: .devcontainer/scripts/enable-codex.sh)"
 fi

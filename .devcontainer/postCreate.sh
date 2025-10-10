@@ -12,11 +12,12 @@ npm i -g @google/gemini-cli || true
 # Auto-install advanced tools if API keys are present (smart lazy-loading)
 echo "Checking for advanced tool API keys..."
 
-if [ -n "$ANTHROPIC_API_KEY" ]; then
-  echo "✓ ANTHROPIC_API_KEY found - installing Codex CLI..."
-  npm i -g @anthropic/codex-cli || echo "⚠️  Codex install failed, can retry later"
+if [ -n "$OPENAI_API_KEY" ]; then
+  echo "✓ OPENAI_API_KEY found - installing OpenAI Codex CLI..."
+  npm i -g @openai/codex || echo "⚠️  Codex install failed, can retry later"
 else
-  echo "⏸️  Codex CLI skipped (no ANTHROPIC_API_KEY)"
+  echo "⏸️  OpenAI Codex CLI skipped (no OPENAI_API_KEY)"
+  echo "   Note: Codex can also use ChatGPT account login"
 fi
 
 # Note: Zen MCP and Serena MCP don't need installation, they're configured via devcontainer.json
