@@ -21,6 +21,11 @@
         "dbaeumer.vscode-eslint",
         "esbenp.prettier-vscode"
       ],
+      "settings": {
+        "terminal.integrated.env.linux": {
+          "AI_TOOLS_MODE": "auto"
+        }
+      },
       "mcp": {
         "servers": {
           "serena": {
