@@ -21,20 +21,9 @@
         "dbaeumer.vscode-eslint",
         "esbenp.prettier-vscode"
       ],
-      "mcp": {
-        "servers": {
-          "serena": {
-            "command": "npx",
-            "args": ["-y", "serena-mcp"],
-            "env": {
-              "OPENAI_API_KEY": "${localEnv:OPENAI_API_KEY}",
-              "ANTHROPIC_API_KEY": "${localEnv:ANTHROPIC_API_KEY}",
-              "GEMINI_API_KEY": "${localEnv:GEMINI_API_KEY}",
-              "OPENROUTER_API_KEY": "${localEnv:OPENROUTER_API_KEY}",
-              "SERENA_DEFAULT_MODEL": "gpt-4o-mini",
-              "SERENA_LOG_LEVEL": "info"
-            }
-          }
+      "settings": {
+        "terminal.integrated.env.linux": {
+          "AI_TOOLS_MODE": "basic"
         }
       }
     }
