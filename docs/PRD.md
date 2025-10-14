@@ -1,143 +1,74 @@
-# Seed PRD: *Audience Store*
+# PRD: Atlanta FIFA Navigator
+> Product Requirements Document  
+> Version 1.0 | Draft | October 2025
 
-### 1. Overview
+## 1. Overview
+The Atlanta FIFA Navigator is a bilingual digital platform designed to guide visitors through events, venues, transportation, and cultural experiences surrounding the FIFA 2026 World Cup activities in Atlanta. The application aims to deliver real-time, contextually relevant information in English and Spanish, supporting both local residents and international visitors.
 
-The Audience Store is a simple web application that allows users to:
+## 2. Objectives
+- Provide a user-friendly navigation experience during FIFA events in Atlanta.
+- Offer bilingual support (English and Spanish) to accommodate a diverse user base.
+- Centralize real-time data on transit, events, venues, and fan activities.
+- Enable businesses and city partners to surface relevant content to users.
 
-1. Sign up and create an account with a username and password.
-2. List products for sale (real or imaginary).
-3. Spend “credits” to buy items listed by other users.
-4. See a marketplace feed of available items and their sellers.
+## 3. Key Features
+### 3.1 Event and Venue Discovery
+- Browse FIFA match schedules and event listings.
+- Access detailed venue maps, seating charts, and amenities.
+- Highlight nearby attractions, dining, and fan zones.
 
-This app is intended as a teaching demo to illustrate how AI can support the full product lifecycle from requirements → code → deploy.
+### 3.2 Real-Time Navigation and Transportation
+- Integrate MARTA, rideshare, and walking directions.
+- Provide real-time transit updates, detours, and parking availability.
+- Offer geofenced alerts and recommended routes during high-traffic periods.
 
----
+### 3.3 Personalized User Experience
+- Enable users to favorite teams, venues, or event types.
+- Deliver tailored notifications and suggested itineraries.
+- Support dynamic content updates based on user preferences and location.
 
-### 2. Goals
+### 3.4 Bilingual Support
+- Full interface available in English and Spanish.
+- Allow users to switch languages seamlessly.
+- Provide accurate translations for all dynamic and static content.
 
-* Demonstrate the risks of “vibe-coded” prototypes (hardcoded data, monolithic files, exposed PII).
-* Show how AI-powered PRD → scaffolding → structured architecture improves quality and maintainability.
-* Provide an interactive, engaging app experience for workshop participants.
+## 4. User Stories
+- As a **fan**, I want to find match schedules and navigate to stadiums easily.
+- As a **tourist**, I want bilingual support and local recommendations near events.
+- As a **business**, I want to promote offers and fan experiences within the app.
+- As a **city partner**, I want real-time data to manage crowd flow and logistics.
 
----
+## 5. Functional Requirements
+- **Data integration:** APIs for schedules, transit, and event data.
+- **Localization:** Full i18n/l10n support for English and Spanish.
+- **Geolocation:** Enable real-time routing and geofencing capabilities.
+- **Notifications:** Push and in-app alerts based on preferences and location.
+- **Scalability:** Must handle peak traffic during FIFA events.
 
-### 3. Core Features
+## 6. Non-Functional Requirements
+- **Performance:** Sub-2s response time for core features.
+- **Security:** Compliant with GDPR and U.S. data protection laws.
+- **Accessibility:** WCAG 2.1 AA compliance.
+- **Availability:** 99.9% uptime during event periods.
 
-**User Accounts**
+## 7. Success Metrics
+- 100K+ active users during FIFA event period.
+- 90%+ satisfaction score for usability and performance.
+- <2% crash rate on supported devices.
+- 50%+ of users utilizing bilingual features.
 
-* Sign up with username + password (stored securely).
-* Login/logout flow.
-* Each user starts with a fixed credit balance (e.g., 100 credits).
+## 8. Milestones
+- **M1:** PRD Approval & Scope Finalization – Nov 2025
+- **M2:** Prototype (Core Navigation + Event Listings) – Jan 2026
+- **M3:** Beta Launch (English + Spanish Support) – Mar 2026
+- **M4:** Final Release – May 2026
 
-**Marketplace**
+## 9. Risks & Mitigations
+- **Risk:** Delayed data feed integration → *Mitigation:* Use mock data with seamless API switch.
+- **Risk:** Performance issues at scale → *Mitigation:* Load testing and CDN caching.
+- **Risk:** Localization inaccuracies → *Mitigation:* Human-in-the-loop review of translations.
 
-* Create a product listing:
-
-  * Title (string).
-  * Description (string).
-  * Price (integer credits).
-* View all products in a shared marketplace feed.
-
-**Transactions**
-
-* Buy a product if you have enough credits.
-* Credits deducted from buyer, added to seller.
-* Product marked as sold (no longer in active feed).
-
-**AI Enhancement (optional/fun)**
-
-* Auto-generate witty product descriptions with Claude/Gemini when an item is listed.
-
----
-
-### 4. Entities & Schema (First Draft)
-
-* **User**
-
-  * `id` (UUID)
-  * `username` (unique string)
-  * `password_hash` (string)
-  * `credits` (int, default = 100)
-
-* **Product**
-
-  * `id` (UUID)
-  * `title` (string)
-  * `description` (string)
-  * `price` (int)
-  * `seller_id` (FK → User.id)
-  * `status` (enum: available/sold)
-
-* **Transaction**
-
-  * `id` (UUID)
-  * `buyer_id` (FK → User.id)
-  * `product_id` (FK → Product.id)
-  * `amount` (int)
-  * `timestamp` (datetime)
-
----
-
-### 5. User Flows
-
-**Signup/Login**
-
-* New user enters username + password → account created with 100 credits.
-* Existing user logs in to see marketplace.
-
-**Listing an Item**
-
-* User fills out form (title, description, price).
-* Item appears in marketplace feed.
-* (Optional) Claude/Gemini enhances description.
-
-**Buying an Item**
-
-* User clicks “Buy.”
-* Check: enough credits? product available?
-* If valid → transaction processed:
-
-  * Buyer’s credits reduced.
-  * Seller’s credits increased.
-  * Product marked sold.
-
-**Viewing Marketplace**
-
-* All available products listed with seller + price.
-* Sold products may be shown separately or hidden.
-
----
-
-### 6. Constraints & Non-Goals
-
-* Credits are fake; no real money involved.
-* No need for advanced features like search, categories, or ratings in v1.
-* Minimal styling is acceptable (focus on function > design).
-* Deployment target: Codespaces → quick deploy (Netlify, Vercel, or Render).
-
----
-
-### 7. Risks to Watch For (Discussion Hooks)
-
-* **Bad path demo**: credentials stored in plaintext, products hardcoded in frontend.
-* **Good path demo**: password hashing, DB schema, clean separation of concerns.
-* **Concurrency**: what if two people try to buy the same item?
-* **PII**: never store user info directly in the frontend bundle.
-
----
-
-### 8. Stretch Ideas (if time)
-
-* Leaderboard: who has the most credits after trading?
-* “Funny product descriptions” auto-generated by Claude.
-* Add categories (food, art, swag) to listings.
-
----
-
-💡 **How you’ll use this**:
-
-* Feed this exact PRD into Claude in Hour 2.
-* Let it expand/over-specify (Claude loves edge cases).
-* Then have teams poke holes: “Where’s the logout flow?” “What about duplicate usernames?” etc.
-* That back-and-forth is half the learning.
-VertiTab
+## 10. Future Considerations
+- Expand multilingual support beyond Spanish.
+- Add AR-based navigation and fan experiences.
+- Introduce ticketing integration and payment options.
