@@ -16,8 +16,28 @@ const Map = ({ isTrafficVisible }: MapProps) => {
   const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
+    let isMounted = true;
+
     const initMap = async () => {
+      // Wait for the ref to be available
+      if (!mapRef.current) {
+        console.log("Waiting for mapRef...");
+        setTimeout(() => {
+          if (isMounted && !map) {
+            initMap();
+          }
+        }, 100);
+        return;
+      }
+
+      if (map) {
+        return; // Already initialized
+      }
+
       try {
+        console.log("Starting map initialization...");
+        console.log("API Key:", process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY ? "Present" : "Missing");
+
         const loader = new Loader({
           apiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY!,
           version: "weekly",
@@ -32,23 +52,29 @@ const Map = ({ isTrafficVisible }: MapProps) => {
             lng: -84.402492,
           },
           zoom: 15,
-          mapId: "MERCEDES_BENZ_STADIUM_MAP", // Replace with your Map ID
+          mapId: "MERCEDES_BENZ_STADIUM_MAP",
         };
 
-        if (mapRef.current) {
+        if (isMounted && mapRef.current) {
           const newMap = new Map(mapRef.current, mapOptions);
+          console.log("Map created successfully!");
           setMap(newMap);
+          setLoading(false);
         }
       } catch (e) {
-        setError(e as Error);
-      } finally {
-        setLoading(false);
+        console.error("Map initialization error:", e);
+        if (isMounted) {
+          setError(e as Error);
+          setLoading(false);
+        }
       }
     };
 
-    if (!map) {
-      initMap();
-    }
+    initMap();
+
+    return () => {
+      isMounted = false;
+    };
   }, [map]);
 
   useEffect(() => {
@@ -66,26 +92,26 @@ const Map = ({ isTrafficVisible }: MapProps) => {
     }
   }, [isTrafficVisible, map]);
 
-  if (loading) {
-    return <div className="w-full min-h-[500px] bg-gray-200 animate-pulse"></div>;
-  }
-
-  if (error) {
-    return (
-      <div className="w-full min-h-[500px] bg-red-100 text-red-700 flex items-center justify-center">
-        Error loading map: {error.message}
-      </div>
-    );
-  }
-
   return (
-    <div className="relative w-full h-full">
+    <div className="relative w-full h-full min-h-[500px]">
+      {loading && (
+        <div className="absolute inset-0 w-full h-full bg-gray-200 animate-pulse flex items-center justify-center z-10">
+          <p className="text-gray-600">Loading map...</p>
+        </div>
+      )}
+
+      {error && (
+        <div className="absolute inset-0 w-full h-full bg-red-100 text-red-700 flex items-center justify-center z-10">
+          Error loading map: {error.message}
+        </div>
+      )}
+
       <div
-        className="w-full min-h-[500px]"
+        className="w-full h-full min-h-[500px]"
         ref={mapRef}
         data-testid="map-container"
       />
-      {/* <TransitMarkers map={map} /> */}
+      {map && <TransitMarkers map={map} />}
     </div>
   );
 };
