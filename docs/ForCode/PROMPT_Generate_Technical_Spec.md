@@ -2,51 +2,53 @@
 
 You are a senior tech lead writing a professional software specification for a teaching demo environment.
 
+## Pre-Reading Required
+1. `docs/FromProd/PRD.md` – Product requirements and feature goals.
+2. `docs/FromProd/WBS.md` – Development phases, AWS service expectations, and MARTA integration tasks.
+3. `docs/FromProd/USER_STORY_MAPPING.md` – User stories and journey mapping.
+4. `docs/FromProd/TECH_NOTE_Codespaces_API_Testing.md` – MARTA connectivity constraints inside Codespaces.
+
 ## Context
-- **PRD Location**: `docs/FromProd/PRD.md` - Product Requirements Document for "Atlanta FIFA Navigator"
-- **WBS Reference**: `docs/FromProd/WBS.md` - Work Breakdown Structure with existing task breakdown
-- **Environment**: GitHub Codespaces + Next.js App Router + pnpm + Prisma + SQLite
+- **PRD Location**: `docs/FromProd/PRD.md` – Product Requirements Document for "Atlanta FIFA Navigator"
+- **WBS Reference**: `docs/FromProd/WBS.md` – Work Breakdown Structure with Phase 3 development tasks
+- **Infrastructure Target**: Next.js App Router frontend + AWS Serverless backend (API Gateway, Lambda, DynamoDB, ElastiCache/Redis, SNS, SES, Cognito)
+- **Data Feeds**: MARTA (bus/train), FIFA schedule, City of Atlanta open data, partner promotions
 - **Key Constraint**: Codespaces blocks non-standard ports (see `docs/FromProd/TECH_NOTE_Codespaces_API_Testing.md`)
-- **Teaching Context**: This is a demo app for teaching PRD → WBS → Milestones → Implementation workflow
+- **Teaching Context**: Demonstrate end-to-end flow from PRD → Spec → Milestones → Implementation suitable for autonomous coding agents
 
 ## Your Job
 
 ### 1. Write Technical Specification (`docs/spec.md`)
-Translate the PRD into an implementable design document including:
+Translate the PRD into an implementable design document that a delivery team (or code agent) can follow.
 
-**Architecture & Infrastructure:**
-- System architecture overview (Next.js App Router, API routes, data layer)
-- Technology stack with specific versions (Next.js, TypeScript, Prisma, etc.)
-- File structure following Next.js App Router + `src/` directory convention
-- Development environment setup (Codespaces considerations)
+**Architecture & Infrastructure**
+- End-to-end system architecture describing how the Next.js frontend interacts with AWS API Gateway + Lambda microservices, DynamoDB, Redis, SNS/SES, and Cognito.
+- Technology stack table that covers web, backend, data, messaging, and infrastructure tooling with versions and rationale.
+- Repository/file structure showing division between `apps/`, `services/`, `infra/`, and shared packages.
+- Development environment plan for GitHub Codespaces, including local emulators (DynamoDB Local, Redis), seeding scripts, and testing workflows.
 
-**Core Systems:**
-- **Data Model**: Prisma schema with relationships, indexes, and migrations
-- **API Routes**: RESTful endpoints with request/response shapes
-- **UI Pages & Components**: Component hierarchy and page structure
-- **External Integrations**:
-  - MARTA Bus API (GTFS-RT on port 443)
-  - MARTA Train API (port 18096 - requires Codespaces proxy strategy)
-  - Google Maps API
+**Core Systems**
+- Data model definition for events, venues, transit snapshots, user profiles, itineraries, alert rules, localization bundles (primarily DynamoDB + S3 + Redis).
+- Data ingestion pipelines for FIFA schedule, partner content, MARTA bus/train feeds (with Codespaces proxy logic), and optional rideshare ETAs.
+- API surface (REST + WebSocket) covering events/venues, transit, personalization, notifications, and partner content. Include request/response shapes or examples.
+- UI pages & component hierarchy for home dashboard, events, venues, transit center, alerts center, and profile management.
+- External integrations: MARTA APIs, Google Maps (maps + routing), city data, rideshare aggregator, AWS SNS/SES for notifications.
 
-**Implementation Details:**
-- Environment detection for Codespaces (see existing `TECH_NOTE_Codespaces_API_Testing.md`)
-- CORS proxy strategy for non-standard ports
-- Error handling patterns (API failures, network timeouts, fallback data)
-- Edge cases and concurrency risks
-- Performance considerations (caching, rate limiting)
-- Security considerations (API key management, input validation)
+**Implementation Details**
+- Environment detection utilities for Codespaces and MARTA proxy selection.
+- Transit resilience (parallel fetch, caching, fallback) and geospatial storage strategy.
+- Event localization workflow, partner content overrides, and data freshness rules.
+- Geofencing, routing, notification delivery, and personalization flows (anonymous sessions + Cognito upgrade).
+- Security, privacy, and compliance considerations (GDPR retention, consent logging), plus observability/monitoring strategy.
 
-**Feature Categorization:**
-- MVP features (required for initial launch)
-- Future features (AI descriptions, advanced analytics, etc.)
-- Known limitations and technical debt
+**Feature Categorization**
+- MVP features that satisfy the PRD (event discovery, venue guidance, real-time navigation, bilingual support, favorites/itineraries, geofenced notifications).
+- Future enhancements (AR, additional languages, analytics, ticketing) and known limitations or technical debt.
 
 ### 2. Work Breakdown Structure
+Create implementation milestones that align with WBS Phase 3 goals and reflect the updated scope.
 
-Create implementation milestones that align with `docs/FromProd/WBS.md` Phase 3 tasks:
-
-**Milestone Format:**
+**Milestone Format**
 ```markdown
 ## Milestone X.Y: [Feature Name]
 **Goal:** [One sentence description]
@@ -55,82 +57,50 @@ Create implementation milestones that align with `docs/FromProd/WBS.md` Phase 3 
 
 ### Tasks
 - [ ] Task 1: [Description]
-  - Files: `path/to/file.ts`, `path/to/component.tsx`
-  - Acceptance: [Specific, testable criteria]
-
-- [ ] Task 2: [Description]
   - Files: `path/to/file.ts`
   - Acceptance: [Specific, testable criteria]
 
 ### Testing Checklist
-- [ ] Unit tests for [component/function]
-- [ ] Integration test for [workflow]
-- [ ] Manual test: [specific user flow]
+- [ ] Unit tests for [...]
+- [ ] Integration test [...]
+- [ ] Manual test [...]
 ```
 
-**Required Milestones** (align with WBS Task 3.6):
-1. **MS-01.01**: Project setup (Next.js, Prisma, dependencies)
-2. **MS-01.02**: Map rendering with Google Maps
-3. **MS-01.03**: MARTA Transit API integration
-   - Subtask A: Bus API (GTFS-RT)
-   - Subtask B: Train API with Codespaces detection
-   - Subtask C: Map markers and real-time updates
-4. **MS-02.01**: UX polish (i18n, accessibility)
-5. **MS-03.01**: Database integration (user preferences)
+**Required Milestones**
+1. **MS-01.01**: Platform Foundations
+2. **MS-01.02**: Event & Venue Discovery Module
+3. **MS-01.03**: Real-Time Navigation & Transit Services
+4. **MS-02.01**: Personalized Experience & Favorites
+5. **MS-02.02**: Notifications & Alerts
+6. **MS-03.01**: Bilingual Support & Accessibility
 
-**For Each Milestone:**
-- List specific files to create/edit
-- Define clear acceptance criteria (testable, observable)
-- Note dependencies on previous milestones
-- Flag Codespaces-specific considerations
-- Include error scenarios and fallback behavior
+For each milestone:
+- List concrete tasks with file paths and acceptance criteria.
+- Include Codespaces, proxy, and AWS infrastructure considerations where relevant.
+- Provide a testing checklist (unit, integration, manual) that proves the milestone is complete.
 
 ### 3. Output Requirements
+- Produce pure Markdown suitable for `docs/spec.md`.
+- Use tables for data models and API references; code blocks for file structures and key snippets.
+- Use checkboxes for milestone task tracking and testing checklist.
+- Reference supporting docs (`TECH_NOTE`, `WBS`, `PRD`) where helpful.
+- Level of detail must enable an autonomous agent to implement the system safely.
 
-**Format:**
-- Pure Markdown suitable for `docs/spec.md`
-- Use tables for data models and API specs
-- Use code blocks for file structure examples
-- Use checkboxes for task tracking
+### 4. Important Constraints
+1. Do **not** write production code—focus on the specification.
+2. Always account for Codespaces limitations (train API proxy, local emulators).
+3. Ensure architecture aligns with AWS services outlined in the WBS.
+4. Make opinionated choices explicit and flag areas needing stakeholder decisions.
+5. Maintain clear separation between MVP scope and future enhancements.
 
-**Level of Detail:**
-- Detailed enough for Claude Code to implement autonomously
-- Include example code snippets for complex patterns (Codespaces detection, CORS proxy)
-- Reference existing docs (TECH_NOTE, WBS) where applicable
-- Call out teaching/learning opportunities
-
-**Tone:**
-- Professional and implementable (not academic)
-- Explicit about edge cases and "gotchas"
-- Note where we're making opinionated choices
-- Flag areas that might need stakeholder decisions
-
-## Important Constraints
-
-1. **Do NOT write implementation code** - focus on specification only
-2. **Do reference existing docs**: WBS.md, TECH_NOTE_Codespaces_API_Testing.md, PRD.md
-3. **Do account for Codespaces**: Environment detection, proxy strategy, port restrictions
-4. **Do create trackable milestones**: Each should produce working, testable functionality
-5. **Do align with teaching workflow**: PRD → Spec → Milestones → Prompts → Code
-
-## Success Criteria
-
-Your spec is successful if:
-- A developer can implement each milestone independently
-- Each milestone has clear, testable acceptance criteria
-- The spec accounts for the Codespaces environment
-- MARTA API integration (including port 18096 workaround) is fully specified
-- The work breakdown aligns with WBS.md Phase 3
-- Error handling and fallback strategies are explicit
-- File structure follows Next.js App Router best practices
+### 5. Success Criteria
+- The spec aligns with PRD objectives and WBS deliverables.
+- Architecture covers Next.js frontend and AWS backend integration.
+- MARTA integration (bus/train plus Codespaces proxy) and geofenced notifications are fully specified.
+- Milestones include verifiable acceptance criteria and testing guidance.
+- Security, compliance, and observability practices are documented.
+- Developers (or AI agents) can implement each milestone independently.
 
 ---
-
-## Pre-Reading Required
-
-**Start by reading**:
-1. `docs/FromProd/PRD.md` - Understand product requirements
-2. `docs/FromProd/WBS.md` - See existing work breakdown (especially Task 3.6)
-3. `docs/FromProd/TECH_NOTE_Codespaces_API_Testing.md` - Understand MARTA API constraints
 
 Then produce `docs/spec.md` with the technical specification and milestone breakdown.
