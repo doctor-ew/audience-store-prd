@@ -30,7 +30,7 @@ export function useMartaData(): UseMartaDataReturn {
     { vehicles: TransitVehicle[] },
     FetchError
   >("/api/marta", fetcher, {
-    refreshInterval: 10000, // Refresh every 10 seconds for smoother real-time updates
+    refreshInterval: 3000, // Refresh every 10 seconds for smoother real-time updates
     revalidateOnFocus: false,
     revalidateOnReconnect: true,
     dedupingInterval: 5000,
