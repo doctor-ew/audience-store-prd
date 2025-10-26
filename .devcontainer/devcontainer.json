@@ -11,7 +11,9 @@
     "OPENAI_API_KEY": "${localEnv:OPENAI_API_KEY}",
     "ANTHROPIC_API_KEY": "${localEnv:ANTHROPIC_API_KEY}",
     "GEMINI_API_KEY": "${localEnv:GEMINI_API_KEY}",
-    "OPENROUTER_API_KEY": "${localEnv:OPENROUTER_API_KEY}"
+    "OPENROUTER_API_KEY": "${localEnv:OPENROUTER_API_KEY}",
+    "MARTA_TRAIN_API_KEY": "${localEnv:MARTA_TRAIN_API_KEY}",
+    "NEXT_PUBLIC_GOOGLE_MAPS_API_KEY": "${localEnv:NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}"
   },
   "customizations": {
     "vscode": {
