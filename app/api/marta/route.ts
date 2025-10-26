@@ -14,6 +14,16 @@ const MOCK_MARTA_DATA = [
 export async function GET() {
   const useMockData = process.env.USE_MOCK_MARTA_DATA === "true";
 
+  // Detect if running in Codespaces
+  const isCodespaces = Boolean(
+    process.env.CODESPACES === "true" ||
+    process.env.GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN
+  );
+
+  if (isCodespaces) {
+    console.log("🚀 CODESPACES DETECTED - Using proxy for MARTA API");
+  }
+
   // If mock data is enabled, return it immediately
   if (useMockData) {
     console.log("Using mock MARTA data for demonstration");
@@ -33,16 +43,21 @@ export async function GET() {
   try {
     console.log("Fetching MARTA bus and train data...");
 
+    // In Codespaces, use allOrigins proxy to bypass port restrictions
+    const busUrl = "https://gtfs-rt.itsmarta.com/TMGTFSRealTimeWebService/vehicle/vehiclepositions.pb";
+    const trainUrl = `https://developerservices.itsmarta.com:18096/itsmarta/railrealtimearrivals/developerservices/traindata?apiKey=${process.env.MARTA_TRAIN_API_KEY}`;
+
+    // For Codespaces: proxy the train API (port 18096) through allOrigins
+    const trainFetchUrl = isCodespaces
+      ? `https://api.allorigins.win/raw?url=${encodeURIComponent(trainUrl)}`
+      : trainUrl;
+
+    console.log(`Train API URL: ${isCodespaces ? 'PROXIED via allOrigins' : 'DIRECT'}`);
+
     // Fetch both buses and trains in parallel
     const [busResponse, trainResponse] = await Promise.all([
-      fetch(
-        "https://gtfs-rt.itsmarta.com/TMGTFSRealTimeWebService/vehicle/vehiclepositions.pb",
-        { signal: controller.signal }
-      ),
-      fetch(
-        `https://developerservices.itsmarta.com:18096/itsmarta/railrealtimearrivals/developerservices/traindata?apiKey=${process.env.MARTA_TRAIN_API_KEY}`,
-        { signal: controller.signal }
-      ),
+      fetch(busUrl, { signal: controller.signal }),
+      fetch(trainFetchUrl, { signal: controller.signal }),
     ]);
 
     clearTimeout(timeoutId);

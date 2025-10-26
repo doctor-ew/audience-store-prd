@@ -39,6 +39,13 @@ The project includes planning, designing, building, testing, deploying, and main
 * **Task 3.3:** Integration with AWS services
 * **Task 3.4:** Multilingual support (English & Spanish)
 * **Task 3.5:** Event data ingestion and real-time updates
+* **Task 3.6:** MARTA Transit API integration
+  * **Subtask 3.6.1:** Implement MARTA Bus API (GTFS-RT) integration
+  * **Subtask 3.6.2:** Implement MARTA Train API integration
+  * **Subtask 3.6.3:** Environment detection for GitHub Codespaces
+  * **Subtask 3.6.4:** CORS proxy implementation for non-standard ports
+  * **Subtask 3.6.5:** Fallback logic and mock data handling
+  * **Technical Note:** See `TECH_NOTE_Codespaces_API_Testing.md` for API verification
 * **Deliverable:** Functional MVP build
 
 ### Phase 4: Testing and Quality Assurance (Weeks 11–12)
@@ -94,6 +101,8 @@ The project includes planning, designing, building, testing, deploying, and main
 | Performance under high traffic                      | Load test early, implement autoscaling         |
 | Translation delays                                  | Use placeholder text and staged rollout        |
 | Security vulnerabilities                            | Continuous scanning, OWASP Top 10 audits       |
+| GitHub Codespaces blocking non-standard ports       | Environment detection + CORS proxy for port 18096 (MARTA Train API) |
+| Third-party proxy service downtime (allOrigins)     | Direct connection in production, mock data fallback in all environments |
 
 ---
 
