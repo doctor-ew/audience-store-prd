@@ -47,7 +47,6 @@
     }
   },
   "postCreateCommand": "bash .devcontainer/postCreate.sh",
-  "postAttachCommand": "bash .devcontainer/postAttach.sh",
   "forwardPorts": [3000],
   "portsAttributes": {
     "3000": { "label": "App", "onAutoForward": "openPreview" }

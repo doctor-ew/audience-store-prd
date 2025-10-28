@@ -2,7 +2,46 @@
 
 **Document Type:** API Testing & Verification Guide
 **Created:** 2025-10-26
+**Updated:** 2025-10-28
 **Status:** Verified Working ✅
+
+---
+
+## 🚨 CRITICAL: Next.js Environment Variable Name Length Bug
+
+**Issue:** Next.js (v15 RC) has a bug where **long environment variable names are not loaded**.
+
+**Affected Variables:**
+- ❌ `GOOGLE_MAPS_API_KEY` → doesn't work
+- ✅ `GMAK` → works!
+- ❌ `MARTA_TRAIN_API_KEY` → doesn't work
+- ✅ `MTAK` → works!
+
+**Solution:** Use short variable names (≤ 10 characters recommended)
+
+**Example `.env.local`:**
+```bash
+# ❌ DON'T USE - Too long, won't load
+GOOGLE_MAPS_API_KEY=AIzaSyBJXjNpV27u5kRWc_6SvbPt5kc0sTFsMQ0
+MARTA_TRAIN_API_KEY=72f48776-a69e-496c-a823-dc6ee91dfd10
+
+# ✅ DO USE - Short names work
+GMAK=AIzaSyBJXjNpV27u5kRWc_6SvbPt5kc0sTFsMQ0
+MTAK=72f48776-a69e-496c-a823-dc6ee91dfd10
+
+# IMPORTANT: NO QUOTES! They become part of the value
+# ❌ WRONG: MTAK="72f48776..."  → value includes quotes
+# ✅ RIGHT: MTAK=72f48776...
+```
+
+**Code Usage:**
+```typescript
+// In src/lib/marta.ts
+const TRAIN_API_URL = `https://...?apiKey=${process.env.MTAK}`;
+
+// In src/components/MapView.tsx
+const apiKey = process.env.NEXT_PUBLIC_GMAK || '';
+```
 
 ---
 
@@ -308,6 +347,47 @@ The train API key is passed through the proxy URL when using allOrigins. While a
 
 ---
 
+## Smooth Marker Animation (Uber-style)
+
+### Implementation
+Transit markers (buses 🚌 and trains 🚊) smoothly glide between positions using coordinate interpolation:
+
+**File:** `src/components/AnimatedTransitMarker.tsx`
+
+**Key Features:**
+1. **requestAnimationFrame** for 60fps smooth animation
+2. **1-second ease-out** transition between old/new coordinates
+3. **Position tracking** with useRef to maintain previous position
+4. **Automatic cleanup** to prevent memory leaks
+
+**Code Pattern:**
+```typescript
+useEffect(() => {
+  const startPos = prevPosRef.current;
+  const endPos = { lat: vehicle.lat, lng: vehicle.lon };
+
+  const animate = () => {
+    const progress = Math.min(elapsed / duration, 1);
+    const eased = 1 - Math.pow(1 - progress, 3); // ease-out
+
+    const lat = startPos.lat + (endPos.lat - startPos.lat) * eased;
+    const lng = startPos.lng + (endPos.lng - startPos.lng) * eased;
+
+    setCurrentPos({ lat, lng });
+
+    if (progress < 1) {
+      requestAnimationFrame(animate);
+    }
+  };
+
+  animate();
+}, [vehicle.lat, vehicle.lon]);
+```
+
+**Result:** Markers glide smoothly to new positions every 20 seconds (SWR refresh interval)
+
+---
+
 ## References
 
 - **MARTA Developer Portal:** https://www.itsmarta.com/app-developer-resources.aspx
@@ -324,3 +404,6 @@ The train API key is passed through the proxy URL when using allOrigins. While a
 | 2025-10-26 | Initial testing of both APIs | ✅ |
 | 2025-10-26 | Verified proxy solution works | ✅ |
 | 2025-10-26 | Documented curl test commands | ✅ |
+| 2025-10-28 | Discovered Next.js env var length bug | ✅ |
+| 2025-10-28 | Implemented smooth marker animation | ✅ |
+| 2025-10-28 | Direct train API works (no proxy needed) | ✅ |
