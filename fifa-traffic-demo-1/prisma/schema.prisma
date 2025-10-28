@@ -1,0 +1,45 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model Event {
+  id          String   @id @default(cuid())
+  fifaEventId String   @unique
+  name        String
+  description String
+  startTime   DateTime
+  venueId     String
+  venue       Venue    @relation(fields: [venueId], references: [id])
+}
+
+model Venue {
+  id        String         @id @default(cuid())
+  name      String
+  address   String
+  latitude  Float
+  longitude Float
+  events    Event[]
+  favorites UserFavorite[] // Add this relation
+}
+
+model UserProfile {
+  id        String         @id @default(cuid())
+  language  String         @default("en")
+  favorites UserFavorite[]
+  createdAt DateTime       @default(now())
+}
+
+model UserFavorite {
+  id        String      @id @default(cuid())
+  profileId String
+  venueId   String
+  profile   UserProfile @relation(fields: [profileId], references: [id])
+  venue     Venue       @relation(fields: [venueId], references: [id])
+
+  @@unique([profileId, venueId])
+}

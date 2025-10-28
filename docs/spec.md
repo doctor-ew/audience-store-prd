@@ -170,8 +170,8 @@ model UserFavorite {
 
 -   **Page: `/` (Home Dashboard)**
     -   `MapView.tsx`: Main interactive map component (client-side).
-        -   `TransitMarker.tsx`: Component for rendering bus/train icons.
-        -   `VenueMarker.tsx`: Component for rendering stadium/venue icons.
+        -   `TransitMarker.tsx`: Component for rendering bus (bus icon) and train (train icon) icons.
+        -   `VenueMarker.tsx`: Component for rendering stadium/venue icons (soccer ball).
     -   `EventList.tsx`: A sidebar listing upcoming FIFA matches.
 -   **Component: `LanguageSwitcher.tsx`**
     -   Allows users to toggle between 'en' and 'es'.
@@ -217,7 +217,7 @@ export function getTrainApiEndpoint(): string {
 ### 4.3. Transit Data Resilience
 
 -   **Parallel Fetch**: The `/api/transit` route will use `Promise.allSettled` to fetch bus and train data simultaneously.
--   **Caching**: The client (`MapView.tsx`) will use `SWR` to fetch from `/api/transit`, providing automatic caching and re-fetching on an interval (e.g., 20 seconds).
+-   **Caching**: The client (`MapView.tsx`) will use `SWR` to fetch from `/api/transit`, providing automatic caching and re-fetching on an interval (e.g., 20 seconds) to create a real-time moving marker experience.
 -   **Fallback**: If the MARTA APIs fail, the API route will return empty arrays. The frontend will show a toast notification indicating that live data is unavailable. A `USE_MOCK_MARTA_DATA=true` env var can force mock data for UI development.
 
 ### 4.4. Security

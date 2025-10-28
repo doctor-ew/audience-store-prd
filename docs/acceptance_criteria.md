@@ -40,12 +40,12 @@ As a tourist, I want to see real-time MARTA train and bus locations so that I ca
 **Then** all MARTA train and bus routes should be displayed on the map.
 
 - [ ] **Condition**: MARTA Bus API (GTFS-RT) is responsive.
-- **Result**: Real-time locations of MARTA buses are displayed as icons on the map, updating every 30 seconds.
+- **Result**: Real-time locations of MARTA buses are displayed as bus icons on the map, updating every 30 seconds.
 - **Acceptance**: Bus icons move smoothly along their routes. Clicking a bus icon shows its route name and next major stop.
 - **Traceability**: WBS 3.6.1, spec.md 4.3
 
 - [ ] **Condition**: MARTA Train API is responsive.
-- **Result**: Real-time locations of MARTA trains are displayed as icons on the map, updating every 30 seconds.
+- **Result**: Real-time locations of MARTA trains are displayed as train icons on the map, updating every 30 seconds.
 - **Acceptance**: Train icons move along the fixed rail lines. Clicking a train icon shows its line color, destination, and ETA for the next 3 stations.
 - **Traceability**: WBS 3.6.2, spec.md 4.3
 
