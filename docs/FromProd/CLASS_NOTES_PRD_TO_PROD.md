@@ -84,7 +84,31 @@ pnpx create-next-app@latest your-project-name \
 - `docs/ForCode/PHASE_1_IMPLEMENTATION.md` - No database approach
 - `docs/FromProd/DATABASE_SETUP.md` - When you're ready for Phase 2
 
-### Lesson 3: How to Talk to AI Assistants
+### Lesson 3: Choose the Right Libraries
+
+**⚠️ IMPORTANT: Tell Gemini which libraries to use BEFORE it starts coding.**
+
+Common mistakes:
+- Letting Gemini choose animation libraries (often picks react-spring, which breaks)
+- Not specifying styling approach (Gemini might create complex CSS)
+- Accepting Gemini's first suggestion without questioning
+
+**✅ Use the recommended tech stack:**
+- **Animation**: Framer Motion (NOT react-spring)
+- **Data Fetching**: SWR
+- **Styling**: Tailwind CSS
+- **Maps**: @vis.gl/react-google-maps
+
+**See**:
+- `docs/FromProd/GEMINI_TECH_STACK_RECOMMENDATIONS.md` - General tech stack guide
+- `docs/FromProd/GEMINI_MILESTONE_TOOLS.md` - Tool recommendations for each milestone
+
+**Starter prompt template:**
+> "Use Next.js 16, Framer Motion for animations, SWR for data fetching, and Tailwind CSS. TypeScript only."
+
+**Before starting each milestone**, check `GEMINI_MILESTONE_TOOLS.md` for specific prompts to give Gemini.
+
+### Lesson 4: How to Talk to AI Assistants
 
 #### Good Prompts for Product Managers
 
@@ -106,7 +130,7 @@ pnpx create-next-app@latest your-project-name \
 **❌ Assuming technical knowledge:**
 > "Refactor the middleware to use edge runtime"
 
-### Lesson 4: Deployment First
+### Lesson 5: Deployment First
 
 **Deploy early and often:**
 
@@ -119,7 +143,7 @@ pnpx create-next-app@latest your-project-name \
 - You can share with stakeholders
 - Catches deployment issues early
 
-### Lesson 5: When You Get Stuck
+### Lesson 6: When You Get Stuck
 
 **Common issues and solutions:**
 
@@ -157,6 +181,8 @@ pnpx create-next-app@latest your-project-name \
 ## Files You Need to Understand
 
 ### For Product Managers (docs/FromProd/)
+- `GEMINI_TECH_STACK_RECOMMENDATIONS.md` - **START HERE** - Core library recommendations
+- `GEMINI_MILESTONE_TOOLS.md` - **ESSENTIAL** - Tool recommendations for each feature milestone
 - `PRD.md` - Product Requirements Document template
 - `USER_STORY_MAPPING.md` - How to write user stories
 - `DATABASE_SETUP.md` - Database guide (Phase 2)
@@ -206,8 +232,11 @@ As the PM, you are responsible for:
 - Deployment fails more than 3 times
 - AI suggests complex webpack configurations
 - You see errors about "native modules" or "adapters"
+- **AI installs react-spring for animations** (use Framer Motion instead)
+- **AI creates custom CSS files** (use Tailwind instead)
+- **Animation keeps breaking after each change** (wrong library choice)
 
-**These usually mean**: The AI went off track. Go back to the guide.
+**These usually mean**: The AI went off track. Go back to the guide and specify the correct libraries.
 
 ## Success Metrics
 
