@@ -1,6 +1,9 @@
 # Setup Database for Vercel - Guide for Claude Code
 
-This is a step-by-step guide for setting up a Next.js project with Prisma and Vercel Postgres from scratch.
+> **⚠️ PHASE 2 ONLY**: This guide is for Phase 2 implementation.
+> **For Phase 1**: See `docs/ForCode/PHASE_1_IMPLEMENTATION.md` (no database)
+
+This is a step-by-step guide for adding Prisma and Vercel Postgres in Phase 2.
 
 ## Context
 

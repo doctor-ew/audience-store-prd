@@ -1,7 +1,22 @@
 # Technical Specification: Atlanta FIFA Navigator
 
-> Version 1.1 | Status: Draft | 2025-10-26
-> Based on: Vercel + Next.js + Prisma Stack
+> Version 2.0 | Status: Active | Updated: 2025-10-29
+> Approach: **Phased Implementation** (Phase 1: No Database | Phase 2: Add Database)
+
+## ⚠️ IMPORTANT: Phased Approach
+
+**This project uses a two-phase implementation strategy:**
+
+- **Phase 1 (Current)**: Maps + MARTA transit - NO DATABASE
+  - Static JSON data files
+  - Client-side localStorage for preferences
+  - Fast deployment to Vercel
+  - See: `docs/ForCode/PHASE_1_IMPLEMENTATION.md`
+
+- **Phase 2 (Future)**: Add database for user features
+  - Vercel Postgres
+  - User profiles and persistent favorites
+  - See: `docs/PHASED_APPROACH.md`
 
 ## 1. Introduction
 
@@ -20,8 +35,8 @@ The application is a monolithic **Next.js application** deployed on **Vercel**. 
 -   **Frontend**: A server-rendered React application built with the Next.js App Router. Data fetching on the client-side will be handled by `SWR` for features requiring real-time updates (like the transit map).
 -   **Backend**: Serverless functions implemented as **Next.js API Routes**. These handle all backend logic, including data fetching from external APIs (MARTA, FIFA) and database interactions via Prisma.
 -   **Database**:
-    -   **Development**: **SQLite** running locally within GitHub Codespaces for simplicity and rapid setup.
-    -   **Production**: **Vercel Postgres**, a fully managed serverless PostgreSQL database that integrates seamlessly with Vercel deployments.
+    -   **Phase 1**: **No database** - static JSON files and localStorage
+    -   **Phase 2**: **Vercel Postgres** - for user profiles and persistent data
 -   **Deployment**: The application will be deployed to **Vercel**, leveraging its CI/CD integration with GitHub for automated builds and deployments.
 
 ### 2.2. Technology Stack
@@ -33,9 +48,8 @@ The application is a monolithic **Next.js application** deployed on **Vercel**. 
 | **UI Library** | React | `^18.0.0` | Component-based UI. |
 | **Styling** | Tailwind CSS | `^3.0.0` | Utility-first CSS for rapid development. |
 | **Data Fetching** | SWR | `^2.0.0` | Client-side data fetching, caching, and revalidation. |
-| **ORM** | Prisma | `^5.0.0` | Type-safe database access for SQLite & Postgres. |
-| **Database (Dev)** | SQLite | `^5.0.0` | Simple, file-based DB for Codespaces. |
-| **Database (Prod)**| Vercel Postgres | `^0.5.0` | Managed serverless Postgres for production. |
+| **ORM** | Prisma | `^5.0.0` | **Phase 2 only** - Type-safe database access. |
+| **Database** | Vercel Postgres | `^0.5.0` | **Phase 2 only** - Managed serverless Postgres. |
 | **Package Mgr** | pnpm | `^8.0.0` | Fast, disk-space efficient. |
 | **Map Provider** | Google Maps API | `v3` | Industry standard for mapping. |
 
@@ -87,9 +101,22 @@ The project will follow Next.js App Router conventions.
 
 ## 3. Core Systems
 
-### 3.1. Data Model (Prisma Schema)
+### 3.1. Data Model
 
-**File**: `prisma/schema.prisma`
+#### Phase 1: Static JSON Files
+
+**Files**:
+- `src/data/events.json` - FIFA event schedules
+- `src/data/venues.json` - Venue information
+- `src/data/translations/en.json` - English translations
+- `src/data/translations/es.json` - Spanish translations
+
+**Client Storage**:
+- `localStorage` - User language preference, favorited venues
+
+#### Phase 2: Prisma Schema (Future)
+
+**File**: `prisma/schema.prisma` (**Phase 2 only**)
 
 ```prisma
 generator client {
@@ -97,10 +124,9 @@ generator client {
 }
 
 datasource db {
-  provider     = "postgresql" // Vercel Postgres
-  url          = env("POSTGRES_PRISMA_URL")
-  directUrl    = env("POSTGRES_URL_NON_POOLING")
-  // For dev, this will be overridden by a local SQLite provider setup
+  provider  = "postgresql"
+  url       = env("POSTGRES_PRISMA_URL")
+  directUrl = env("POSTGRES_URL_NON_POOLING")
 }
 
 model Event {
@@ -124,7 +150,7 @@ model Venue {
 }
 
 model UserProfile {
-  id        String    @id @default(cuid()) // Corresponds to a session ID or device ID
+  id        String    @id @default(cuid())
   language  String    @default("en")
   favorites UserFavorite[]
   createdAt DateTime  @default(now())

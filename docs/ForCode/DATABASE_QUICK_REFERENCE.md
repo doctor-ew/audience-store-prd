@@ -1,6 +1,9 @@
 # Database Setup - Quick Reference
 
-## TL;DR
+> **⚠️ PHASE 2 ONLY**: Database is not needed for Phase 1
+> **Phase 1**: Use static JSON files and localStorage
+
+## TL;DR (Phase 2)
 
 **For Vercel deployment: Use Vercel Postgres with these 4 steps:**
 

@@ -1,6 +1,9 @@
 # Database Setup for Vercel Deployment
 
-This guide explains how to set up your database correctly from the start for seamless Vercel deployment.
+> **⚠️ PHASE 2 FEATURE**: This guide is for Phase 2 implementation only.
+> **For Phase 1**: See `docs/ForCode/PHASE_1_IMPLEMENTATION.md` (no database required)
+
+This guide explains how to set up your database for Phase 2 when adding user features and persistent data.
 
 ## Problem
 
