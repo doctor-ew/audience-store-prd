@@ -112,14 +112,40 @@ The `allorigins.win` proxy has rate limits. If you hit them:
 
 When deploying to production (Vercel, AWS, etc.), the code automatically uses **direct connections** because those environments don't set Codespaces environment variables. No proxy overhead occurs in production.
 
+## Database Setup
+
+The application uses Prisma with Vercel Postgres for database management. See the detailed guides:
+
+- **For Production Team**: `docs/FromProd/DATABASE_SETUP.md` - Complete database setup guide
+- **For Claude Code**: `docs/ForCode/SETUP_DATABASE_FOR_VERCEL.md` - Step-by-step implementation
+- **Quick Reference**: `docs/ForCode/DATABASE_QUICK_REFERENCE.md` - Fast lookup
+
+### Quick Start
+
+```bash
+# 1. Pull environment variables from Vercel
+vercel env pull .env.local
+
+# 2. Run migrations
+pnpm prisma migrate dev
+
+# 3. Start development server
+pnpm run dev
+```
+
+**Important**: Always use Vercel Postgres for production deployments. SQLite is not supported on Vercel's serverless environment.
+
 ## Next Steps
 
 1. Set up your Codespaces secrets with the required API keys
-2. Rebuild your Codespace if it's already running
-3. Test the application and verify console logs show proxy usage
-4. Refer to `TECH_NOTE_Codespaces_API_Testing.md` for curl test commands
+2. Pull Vercel environment variables: `vercel env pull .env.local`
+3. Run database migrations: `pnpm prisma migrate dev`
+4. Rebuild your Codespace if it's already running
+5. Test the application and verify console logs show proxy usage
+6. Refer to `TECH_NOTE_Codespaces_API_Testing.md` for curl test commands
 
 ---
 
 **Created:** 2025-10-26
+**Updated:** 2025-10-29
 **Branch:** fifa-traffic-demo

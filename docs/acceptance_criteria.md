@@ -1,8 +1,18 @@
 # Acceptance Criteria: Atlanta FIFA Navigator
 
+> **Version**: 2.0 | **Updated**: 2025-10-29 | **Status**: Active
+
+## ⚠️ Phased Implementation
+
+This project uses a two-phase approach. Criteria are marked as:
+- **[Phase 1]** - MVP features (no database, static data)
+- **[Phase 2]** - Advanced features (database, user profiles)
+
+**Current Focus**: Phase 1 criteria only
+
 This document outlines the acceptance criteria for the Atlanta FIFA Navigator project, ensuring that all features and requirements meet the definition of "done."
 
-## Feature: Map Display and Navigation
+## Feature: Map Display and Navigation **[Phase 1]**
 
 ### User Story
 As a fan, I want to find match schedules and navigate to stadiums easily so that I can get to my event on time.
@@ -28,7 +38,7 @@ As a fan, I want to find match schedules and navigate to stadiums easily so that
 - **Acceptance**: The routes are drawn on the map, and turn-by-turn directions are available. Estimated travel times are displayed and are accurate within 15% of actual travel time.
 - **Traceability**: PRD 3.2, USER_STORY_MAPPING
 
-## Feature: MARTA Transit Overlay
+## Feature: MARTA Transit Overlay **[Phase 1]**
 
 ### User Story
 As a tourist, I want to see real-time MARTA train and bus locations so that I can plan my travel effectively.
@@ -59,7 +69,7 @@ As a tourist, I want to see real-time MARTA train and bus locations so that I ca
 - **Acceptance**: The app does not crash. A toast notification appears stating, "Live MARTA data is currently unavailable. Please check back shortly."
 - **Traceability**: WBS 3.6.5, spec.md 4.3
 
-## Feature: Event and Venue Discovery
+## Feature: Event and Venue Discovery **[Phase 1]**
 
 ### User Story
 As a fan, I want to browse FIFA match schedules and find information about venues.
@@ -72,7 +82,7 @@ As a fan, I want to browse FIFA match schedules and find information about venue
 
 - [ ] **Condition**: User views the event list.
 - **Result**: A scrollable list of events is displayed, with each item showing the event name, date, time, and venue.
-- **Acceptance**: All official FIFA matches for the Atlanta area are present, sourced from the database via Prisma.
+- **Acceptance**: All official FIFA matches for the Atlanta area are present, sourced from static JSON file `src/data/events.json`.
 - **Traceability**: PRD 3.1, WBS 3.5, spec.md 3.1
 
 - [ ] **Condition**: User taps on a specific event.
@@ -85,7 +95,7 @@ As a fan, I want to browse FIFA match schedules and find information about venue
 - **Acceptance**: The screen shows the venue name, address, a photo, and a list of amenities (restrooms, concessions, etc.).
 - **Traceability**: PRD 3.1
 
-## Feature: Bilingual Support (English/Spanish)
+## Feature: Bilingual Support (English/Spanish) **[Phase 1]**
 
 ### User Story
 As a tourist, I want bilingual support so that I can use the application in my preferred language.
@@ -98,7 +108,7 @@ As a tourist, I want bilingual support so that I can use the application in my p
 
 - [ ] **Condition**: User selects "Español" from the `LanguageSwitcher.tsx` component.
 - **Result**: The entire UI immediately re-renders in Spanish.
-- **Acceptance**: All static UI text (buttons, labels, menus) is translated using data from `src/i18n/es.json`. The user's language preference is persisted via the `/api/user` endpoint.
+- **Acceptance**: All static UI text (buttons, labels, menus) is translated using data from `src/data/translations/es.json`. The user's language preference is persisted in `localStorage`.
 - **Traceability**: PRD 3.4, WBS 3.4, USER_STORY_MAPPING, spec.md 3.3
 
 - [ ] **Condition**: User's device is set to Spanish as the default language.
@@ -106,7 +116,7 @@ As a tourist, I want bilingual support so that I can use the application in my p
 - **Acceptance**: The app correctly detects the `Accept-Language` browser header and sets the initial language without user intervention.
 - **Traceability**: PRD 3.4
 
-## Technical Requirements
+## Technical Requirements **[Phase 1]**
 
 ### Performance
 - [ ] **Condition**: User loads the application for the first time.
@@ -121,15 +131,16 @@ As a tourist, I want bilingual support so that I can use the application in my p
 
 ### Codespaces Environment Compatibility
 - [ ] **Condition**: A developer runs `pnpm dev` in a new GitHub Codespace.
-- **Result**: The application starts successfully and connects to the local SQLite database.
-- **Acceptance**: All features, including the proxied MARTA Train API, are fully functional within the Codespace environment for development and testing. The `postCreate.sh` script runs migrations successfully.
+- **Result**: The application starts successfully without requiring database setup.
+- **Acceptance**: All features, including the proxied MARTA Train API, are fully functional within the Codespace environment for development and testing.
 - **Traceability**: WBS 3.6.3, spec.md 2.4
 
-### Database
-- [ ] **Condition**: The application is deployed to Vercel (production).
+### Database **[Phase 2 Only]**
+- [ ] **Condition**: The application is deployed to Vercel (production) in Phase 2.
 - **Result**: Prisma client connects to the Vercel Postgres database.
 - **Acceptance**: The application reads and writes data to the production database successfully. The `POSTGRES_PRISMA_URL` environment variable is correctly used.
 - **Traceability**: spec.md 2.1, spec.md 3.1
+- **Note**: Not applicable for Phase 1
 
 ### Security
 - [ ] **Condition**: A developer inspects the client-side code.
@@ -138,9 +149,17 @@ As a tourist, I want bilingual support so that I can use the application in my p
 - **Traceability**: spec.md 4.4
 
 ## Nice to Have
+
+### Phase 1
 - [ ] **Condition**: User favorites a venue.
-- **Result**: The venue is added to the user's profile and is highlighted on the map.
-- **Acceptance**: A `POST` request to `/api/user` successfully creates a `UserFavorite` record in the database. The venue marker changes appearance to indicate its favorited state.
+- **Result**: The venue is marked as favorite in localStorage and highlighted on the map.
+- **Acceptance**: The favorite state is stored in `localStorage` and persists across page refreshes. The venue marker changes appearance to indicate its favorited state.
+- **Traceability**: PRD 3.3, spec.md 3.1
+
+### Phase 2 Only
+- [ ] **Condition**: User favorites a venue (Phase 2).
+- **Result**: The venue is added to the user's profile in the database and highlighted on the map.
+- **Acceptance**: A `POST` request to `/api/user` successfully creates a `UserFavorite` record in the database. Favorites sync across devices.
 - **Traceability**: PRD 3.3, spec.md 3.1
 
 - [ ] **Condition**: User enables a traffic layer.
