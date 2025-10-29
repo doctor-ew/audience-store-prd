@@ -33,7 +33,8 @@ pnpx create-next-app@latest your-project-name \
   --import-alias "@/*" \
   --use-pnpm \
   --eslint \
-  --no-react-compiler
+  --no-react-compiler \
+  --no-turbopack
 ```
 
 **What this does:**
@@ -45,6 +46,7 @@ pnpx create-next-app@latest your-project-name \
 - `--use-pnpm` - Uses pnpm package manager (faster, more efficient)
 - `--eslint` - Includes code linting (catches errors)
 - `--no-react-compiler` - Skips React Compiler (not needed for beginners)
+- `--no-turbopack` - Uses standard webpack (Turbopack is experimental)
 
 ## Key Lessons
 
