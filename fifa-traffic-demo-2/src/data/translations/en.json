@@ -1,7 +1,8 @@
 {
   "app.title": "Atlanta FIFA Navigator",
   "map.title": "Transit Map",
-  "events.title": "Upcoming Events",
+  "events.title": "FIFA 2026 Schedule",
+  "events.none": "No upcoming matches",
   "transit.bus": "Bus",
   "transit.train": "Train",
   "language.switch": "Switch Language",

@@ -10,17 +10,33 @@
   {
     "id": "fifa-2026-atl-002",
     "fifaEventId": "FIFA2026-ATL-002",
-    "name": "FIFA World Cup 2026 - Group Stage Match 2",
-    "description": "Second group stage match at Mercedes-Benz Stadium",
+    "name": "Group A: Mexico vs. Poland",
+    "description": "Exciting Group A match featuring Mexico and Poland",
     "startTime": "2026-06-15T16:00:00Z",
     "venueId": "venue-mbs"
   },
   {
     "id": "fifa-2026-atl-003",
     "fifaEventId": "FIFA2026-ATL-003",
-    "name": "FIFA World Cup 2026 - Group Stage Match 3",
-    "description": "Third group stage match at Mercedes-Benz Stadium",
+    "name": "Group B: Spain vs. Morocco",
+    "description": "High-stakes encounter between Spain and Morocco",
     "startTime": "2026-06-19T13:00:00Z",
+    "venueId": "venue-mbs"
+  },
+  {
+    "id": "fifa-2026-atl-004",
+    "fifaEventId": "FIFA2026-ATL-004",
+    "name": "Group C: Argentina vs. Australia",
+    "description": "Argentina faces Australia in crucial group stage match",
+    "startTime": "2026-06-23T19:00:00Z",
+    "venueId": "venue-mbs"
+  },
+  {
+    "id": "fifa-2026-atl-005",
+    "fifaEventId": "FIFA2026-ATL-005",
+    "name": "Round of 16 Match",
+    "description": "Knockout round begins at Mercedes-Benz Stadium",
+    "startTime": "2026-06-28T15:00:00Z",
     "venueId": "venue-mbs"
   }
 ]

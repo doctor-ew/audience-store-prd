@@ -27,10 +27,11 @@ export default function LanguageSwitcher({ currentLang }: LanguageSwitcherProps)
   return (
     <button
       onClick={toggleLanguage}
-      className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors font-semibold"
+      className="px-4 py-2 bg-white/20 text-white rounded-lg hover:bg-white/30 transition-all font-semibold border border-white/30 backdrop-blur-sm flex items-center gap-2"
       aria-label="Switch language"
     >
-      {currentLang === 'en' ? 'ES' : 'EN'}
+      <span className="text-xl">🌐</span>
+      <span>{currentLang === 'en' ? 'Español' : 'English'}</span>
     </button>
   );
 }

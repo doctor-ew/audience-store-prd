@@ -7,7 +7,6 @@ import AnimatedTransitMarker from './AnimatedTransitMarker';
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
-const ATLANTA_CENTER = { lat: 33.7490, lng: -84.3880 };
 const STADIUM_LOCATION = {
   lat: parseFloat(process.env.NEXT_PUBLIC_STADIUM_LAT || '33.754542'),
   lng: parseFloat(process.env.NEXT_PUBLIC_STADIUM_LNG || '-84.402492'),

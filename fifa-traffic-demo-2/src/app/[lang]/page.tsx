@@ -18,19 +18,25 @@ export default async function Home({
   const t = getTranslations(lang);
 
   return (
-    <main className="h-screen w-screen flex flex-col">
-      <header className="p-4 bg-blue-600 text-white flex items-center justify-between">
-        <h1 className="text-2xl font-bold">{t['app.title']}</h1>
+    <main className="h-screen w-screen flex flex-col relative">
+      {/* Full Screen Map */}
+      <div className="absolute inset-0">
+        <MapView />
+      </div>
+
+      {/* Floating Header */}
+      <header className="absolute top-0 left-0 right-0 z-20 p-4 bg-gradient-to-b from-blue-600/95 to-blue-600/80 backdrop-blur-sm text-white flex items-center justify-between shadow-lg">
+        <h1 className="text-2xl font-bold flex items-center">
+          <span className="mr-2">⚽</span>
+          {t['app.title']}
+        </h1>
         <LanguageSwitcher currentLang={lang} />
       </header>
-      <div className="flex-1 flex overflow-hidden">
-        <div className="flex-1 relative">
-          <MapView />
-        </div>
-        <aside className="w-96 bg-gray-50 overflow-y-auto">
-          <EventList events={events} translations={t} />
-        </aside>
-      </div>
+
+      {/* Translucent Event Schedule Sidebar - Right Side */}
+      <aside className="absolute top-20 right-4 bottom-4 w-96 z-10 rounded-xl shadow-2xl overflow-hidden">
+        <EventList events={events} translations={t} />
+      </aside>
     </main>
   );
 }

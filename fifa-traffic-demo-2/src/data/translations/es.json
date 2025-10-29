@@ -1,7 +1,8 @@
 {
   "app.title": "Navegador FIFA de Atlanta",
   "map.title": "Mapa de Tránsito",
-  "events.title": "Próximos Eventos",
+  "events.title": "Calendario FIFA 2026",
+  "events.none": "No hay partidos próximos",
   "transit.bus": "Autobús",
   "transit.train": "Tren",
   "language.switch": "Cambiar Idioma",
