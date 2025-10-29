@@ -48,6 +48,12 @@ export async function fetchTrainData(): Promise<TransitVehicle[]> {
       return [];
     }
     const data = await response.json();
+
+    // The API can return a single object on error, so ensure it's an array
+    if (!Array.isArray(data)) {
+      console.warn('MARTA Train API did not return an array, returning empty. Response:', data);
+      return [];
+    }
     
     // Deduplicate trains by TRAIN_ID
     const uniqueTrains = new Map();

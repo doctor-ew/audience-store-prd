@@ -8,7 +8,7 @@ import { TransitVehicle } from '@/types';
 const useAnimatedPosition = (lat: number, lng: number, duration = 2000) => {
   const [animatedPosition, setAnimatedPosition] = useState({ lat, lng });
   const previousPositionRef = useRef({ lat, lng });
-  const animationFrameRef = useRef<number>();
+  const animationFrameRef = useRef<number | undefined>(undefined);
 
   useEffect(() => {
     const startPosition = previousPositionRef.current;
