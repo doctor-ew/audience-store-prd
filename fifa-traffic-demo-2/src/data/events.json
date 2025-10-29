@@ -1,0 +1,18 @@
+[
+  {
+    "id": "fifa-2026-atl-001",
+    "fifaEventId": "FIFA2026-ATL-001",
+    "name": "FIFA World Cup 2026 - Opening Match",
+    "description": "The opening match of FIFA World Cup 2026 in Atlanta",
+    "startTime": "2026-06-11T19:00:00Z",
+    "venueId": "venue-mbs"
+  },
+  {
+    "id": "fifa-2026-atl-002",
+    "fifaEventId": "FIFA2026-ATL-002",
+    "name": "FIFA World Cup 2026 - Group Stage Match 2",
+    "description": "Second group stage match at Mercedes-Benz Stadium",
+    "startTime": "2026-06-15T16:00:00Z",
+    "venueId": "venue-mbs"
+  }
+]

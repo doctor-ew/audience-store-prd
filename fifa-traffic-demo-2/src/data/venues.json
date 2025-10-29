@@ -1,0 +1,10 @@
+[
+  {
+    "id": "venue-mbs",
+    "name": "Mercedes-Benz Stadium",
+    "address": "1 AMB Drive NW, Atlanta, GA 30313",
+    "latitude": 33.755487,
+    "longitude": -84.400993,
+    "amenities": ["Restrooms", "Concessions", "Accessibility", "WiFi"]
+  }
+]
