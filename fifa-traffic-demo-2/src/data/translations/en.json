@@ -3,6 +3,7 @@
   "map.title": "Transit Map",
   "events.title": "FIFA 2026 Schedule",
   "events.none": "No upcoming matches",
+  "events.dateConnector": "at",
   "transit.bus": "Bus",
   "transit.train": "Train",
   "language.switch": "Switch Language",

@@ -5,7 +5,13 @@ import { getEvents } from '@/lib/data';
 import { getTranslations, Locale } from '@/lib/i18n';
 
 export async function generateStaticParams() {
-  return [{ lang: 'en' }, { lang: 'es' }];
+  return [
+    { lang: 'en' },
+    { lang: 'es' },
+    { lang: 'fr' },
+    { lang: 'de' },
+    { lang: 'ko' },
+  ];
 }
 
 export default async function Home({
@@ -35,7 +41,7 @@ export default async function Home({
 
       {/* Translucent Event Schedule Sidebar - Right Side */}
       <aside className="absolute top-20 right-4 bottom-4 w-96 z-10 rounded-xl shadow-2xl overflow-hidden">
-        <EventList events={events} translations={t} />
+        <EventList events={events} translations={t} locale={lang} />
       </aside>
     </main>
   );

@@ -3,6 +3,7 @@
   "map.title": "Mapa de Tránsito",
   "events.title": "Calendario FIFA 2026",
   "events.none": "No hay partidos próximos",
+  "events.dateConnector": "a las",
   "transit.bus": "Autobús",
   "transit.train": "Tren",
   "language.switch": "Cambiar Idioma",

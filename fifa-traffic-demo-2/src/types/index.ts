@@ -2,7 +2,15 @@ export interface Event {
   id: string;
   fifaEventId: string;
   name: string;
+  nameEs?: string;
+  nameFr?: string;
+  nameDe?: string;
+  nameKo?: string;
   description: string;
+  descriptionEs?: string;
+  descriptionFr?: string;
+  descriptionDe?: string;
+  descriptionKo?: string;
   startTime: string;
   venueId: string;
 }

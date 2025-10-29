@@ -1,7 +1,9 @@
 'use client';
 
+import { Locale } from './i18n';
+
 export type UserPreferences = {
-  language: 'en' | 'es';
+  language: Locale;
   favoriteVenues: string[];
 };
 

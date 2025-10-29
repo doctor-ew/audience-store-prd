@@ -1,0 +1,11 @@
+{
+  "app.title": "애틀랜타 FIFA 내비게이터",
+  "map.title": "교통 지도",
+  "events.title": "FIFA 2026 일정",
+  "events.none": "예정된 경기가 없습니다",
+  "events.dateConnector": "",
+  "transit.bus": "버스",
+  "transit.train": "기차",
+  "language.switch": "언어 변경",
+  "venue.amenities": "편의시설"
+}

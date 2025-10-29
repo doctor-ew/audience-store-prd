@@ -1,0 +1,11 @@
+{
+  "app.title": "Navigateur FIFA d'Atlanta",
+  "map.title": "Carte de Transport",
+  "events.title": "Calendrier FIFA 2026",
+  "events.none": "Aucun match à venir",
+  "events.dateConnector": "à",
+  "transit.bus": "Bus",
+  "transit.train": "Train",
+  "language.switch": "Changer de Langue",
+  "venue.amenities": "Équipements"
+}

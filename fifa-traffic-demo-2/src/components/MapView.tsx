@@ -53,8 +53,8 @@ export default function MapView() {
   return (
     <APIProvider apiKey={apiKey}>
       <div className="relative w-full h-full">
-        {/* Traffic Toggle Button */}
-        <div className="absolute top-4 left-4 z-10">
+        {/* Traffic Toggle Button - Moved to bottom left to avoid sidebar */}
+        <div className="absolute bottom-6 left-4 z-10">
           <button
             onClick={() => setShowTraffic(!showTraffic)}
             className={`px-4 py-2 rounded-lg shadow-lg font-semibold transition-all ${
@@ -68,8 +68,8 @@ export default function MapView() {
         </div>
 
         <Map
-          defaultCenter={ATLANTA_CENTER}
-          defaultZoom={12}
+          defaultCenter={STADIUM_LOCATION}
+          defaultZoom={14}
           mapId="atlanta-fifa-map"
           className="w-full h-full"
         >
