@@ -32,7 +32,8 @@ pnpx create-next-app@latest your-project-name \
   --src-dir \
   --import-alias "@/*" \
   --use-pnpm \
-  --eslint
+  --eslint \
+  --no-react-compiler
 ```
 
 **What this does:**
@@ -43,6 +44,7 @@ pnpx create-next-app@latest your-project-name \
 - `--import-alias "@/*"` - Allows clean imports like `@/components/Button`
 - `--use-pnpm` - Uses pnpm package manager (faster, more efficient)
 - `--eslint` - Includes code linting (catches errors)
+- `--no-react-compiler` - Skips React Compiler (not needed for beginners)
 
 ## Key Lessons
 
