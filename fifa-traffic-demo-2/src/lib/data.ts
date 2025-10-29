@@ -1,36 +1,19 @@
 import eventsData from '@/data/events.json';
 import venuesData from '@/data/venues.json';
-
-export interface Event {
-  id: string;
-  fifaEventId: string;
-  name: string;
-  description: string;
-  startTime: string;
-  venueId: string;
-}
-
-export interface Venue {
-  id: string;
-  name: string;
-  address: string;
-  latitude: number;
-  longitude: number;
-  amenities: string[];
-}
+import { Event, Venue } from '@/types';
 
 export function getEvents(): Event[] {
-  return eventsData;
+  return eventsData as Event[];
 }
 
 export function getVenues(): Venue[] {
-  return venuesData;
+  return venuesData as Venue[];
 }
 
 export function getVenueById(id: string): Venue | undefined {
-  return venuesData.find(v => v.id === id);
+  return venuesData.find(v => v.id === id) as Venue | undefined;
 }
 
 export function getEventsByVenueId(venueId: string): Event[] {
-  return eventsData.filter(e => e.venueId === venueId);
+  return eventsData.filter(e => e.venueId === venueId) as Event[];
 }

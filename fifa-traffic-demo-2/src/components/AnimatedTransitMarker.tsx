@@ -1,128 +1,120 @@
 'use client';
 
 import { AdvancedMarker } from '@vis.gl/react-google-maps';
-import { useSpring } from 'react-spring';
-import { FC, memo, useEffect, useState, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 interface AnimatedTransitMarkerProps {
-  latitude: number;
-  longitude: number;
-  type: 'bus' | 'train';
+  position: { lat: number; lng: number };
+  type: 'bus' | 'train' | 'venue';
+  label?: string;
 }
 
-const BusIcon = () => (
-  <div style={{
-    width: 36,
-    height: 36,
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.4))'
-  }}>
-    <svg width="36" height="36" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-      {/* Bus body */}
-      <rect x="8" y="10" width="32" height="26" rx="3" fill="#FFC107"/>
-      <rect x="8" y="10" width="32" height="26" rx="3" stroke="#333" strokeWidth="1.5"/>
-
-      {/* Windshield */}
-      <rect x="11" y="14" width="26" height="10" rx="1" fill="#87CEEB" stroke="#333" strokeWidth="1"/>
-
-      {/* Bottom windows/doors */}
-      <rect x="11" y="26" width="11" height="8" rx="1" fill="#666"/>
-      <rect x="26" y="26" width="11" height="8" rx="1" fill="#666"/>
-
-      {/* Wheels */}
-      <circle cx="15" cy="37" r="4" fill="#333" stroke="#666" strokeWidth="1.5"/>
-      <circle cx="33" cy="37" r="4" fill="#333" stroke="#666" strokeWidth="1.5"/>
-      <circle cx="15" cy="37" r="2" fill="#555"/>
-      <circle cx="33" cy="37" r="2" fill="#555"/>
-
-      {/* Headlights */}
-      <circle cx="12" cy="35" r="1.5" fill="#FFE082"/>
-      <circle cx="36" cy="35" r="1.5" fill="#FFE082"/>
-    </svg>
-  </div>
-);
-
-const TrainIcon = () => (
-  <div style={{
-    width: 36,
-    height: 36,
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.4))'
-  }}>
-    <svg width="36" height="36" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-      {/* Train body */}
-      <rect x="10" y="8" width="28" height="30" rx="2" fill="#E53935"/>
-      <rect x="10" y="8" width="28" height="30" rx="2" stroke="#333" strokeWidth="1.5"/>
-
-      {/* Front window */}
-      <rect x="13" y="11" width="22" height="10" rx="1.5" fill="#87CEEB" stroke="#333" strokeWidth="1"/>
-
-      {/* Side windows */}
-      <rect x="13" y="23" width="7" height="6" rx="1" fill="#B3E5FC" stroke="#333" strokeWidth="0.8"/>
-      <rect x="21" y="23" width="7" height="6" rx="1" fill="#B3E5FC" stroke="#333" strokeWidth="0.8"/>
-      <rect x="29" y="23" width="6" height="6" rx="1" fill="#B3E5FC" stroke="#333" strokeWidth="0.8"/>
-
-      {/* Door line */}
-      <line x1="20" y1="23" x2="20" y2="32" stroke="#333" strokeWidth="1"/>
-
-      {/* Wheels/bogies */}
-      <rect x="12" y="36" width="8" height="3" rx="1.5" fill="#333"/>
-      <rect x="28" y="36" width="8" height="3" rx="1.5" fill="#333"/>
-
-      {/* Front yellow stripe */}
-      <rect x="10" y="31" width="28" height="3" fill="#FFD600"/>
-
-      {/* Headlight */}
-      <circle cx="24" cy="37" r="1.5" fill="#FFE082"/>
-    </svg>
-  </div>
-);
-
-const AnimatedTransitMarker: FC<AnimatedTransitMarkerProps> = memo(({ latitude, longitude, type }) => {
-  const isFirstRender = useRef(true);
-  const [position, setPosition] = useState({ lat: latitude, lng: longitude });
-
-  const [, api] = useSpring(() => ({
-    lat: latitude,
-    lng: longitude,
-    config: { tension: 280, friction: 60 },
-    onChange: (result) => {
-      // Ensure we're passing actual numbers, not spring values
-      const lat = result.value.lat;
-      const lng = result.value.lng;
-      setPosition({
-        lat: typeof lat === 'number' ? lat : parseFloat(String(lat)),
-        lng: typeof lng === 'number' ? lng : parseFloat(String(lng))
-      });
-    }
-  }));
+export default function AnimatedTransitMarker({
+  position,
+  type,
+  label,
+}: AnimatedTransitMarkerProps) {
+  const [currentPosition, setCurrentPosition] = useState(position);
+  const previousPositionRef = useRef(position);
+  const animationFrameRef = useRef<number>();
 
   useEffect(() => {
-    // Skip animation on first render to avoid jumping
-    if (isFirstRender.current) {
-      isFirstRender.current = false;
-      setPosition({ lat: latitude, lng: longitude });
+    // Don't animate venue markers
+    if (type === 'venue') {
+      setCurrentPosition(position);
       return;
     }
 
-    // Animate to new position
-    api.start({
-      lat: latitude,
-      lng: longitude,
-    });
-  }, [latitude, longitude, api]);
+    const startPosition = previousPositionRef.current;
+    const endPosition = position;
+
+    // Check if position actually changed
+    if (
+      startPosition.lat === endPosition.lat &&
+      startPosition.lng === endPosition.lng
+    ) {
+      return;
+    }
+
+    const startTime = Date.now();
+    const duration = 2000; // 2 seconds animation
+
+    const animate = () => {
+      const elapsed = Date.now() - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+
+      // Easing function for smooth animation
+      const easeProgress = progress < 0.5
+        ? 2 * progress * progress
+        : -1 + (4 - 2 * progress) * progress;
+
+      const interpolatedLat =
+        startPosition.lat + (endPosition.lat - startPosition.lat) * easeProgress;
+      const interpolatedLng =
+        startPosition.lng + (endPosition.lng - startPosition.lng) * easeProgress;
+
+      setCurrentPosition({
+        lat: interpolatedLat,
+        lng: interpolatedLng,
+      });
+
+      if (progress < 1) {
+        animationFrameRef.current = requestAnimationFrame(animate);
+      } else {
+        previousPositionRef.current = endPosition;
+      }
+    };
+
+    animationFrameRef.current = requestAnimationFrame(animate);
+
+    return () => {
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current);
+      }
+    };
+  }, [position, type]);
+
+  const getMarkerColor = () => {
+    switch (type) {
+      case 'bus':
+        return '#3B82F6'; // Blue
+      case 'train':
+        return '#EF4444'; // Red
+      case 'venue':
+        return '#10B981'; // Green
+      default:
+        return '#6B7280'; // Gray
+    }
+  };
+
+  const getIcon = () => {
+    switch (type) {
+      case 'bus':
+        return '🚌';
+      case 'train':
+        return '🚊';
+      case 'venue':
+        return '🏟️';
+      default:
+        return '📍';
+    }
+  };
 
   return (
-    <AdvancedMarker position={position}>
-      {type === 'bus' ? <BusIcon /> : <TrainIcon />}
+    <AdvancedMarker position={currentPosition} title={label}>
+      <div className="flex flex-col items-center">
+        <div
+          className="flex items-center justify-center w-10 h-10 rounded-full text-white text-xl shadow-lg transition-transform hover:scale-110"
+          style={{ backgroundColor: getMarkerColor() }}
+        >
+          {getIcon()}
+        </div>
+        {label && type === 'venue' && (
+          <div className="mt-1 px-2 py-1 bg-white rounded shadow-md text-xs font-semibold">
+            {label}
+          </div>
+        )}
+      </div>
     </AdvancedMarker>
   );
-});
-
-AnimatedTransitMarker.displayName = 'AnimatedTransitMarker';
-
-export default AnimatedTransitMarker;
+}

@@ -1,31 +1,31 @@
 'use client';
 
-import { FC } from 'react';
-import useSWR from 'swr';
+import { Event } from '@/types';
 import EventCard from './EventCard';
 
-const fetcher = (url: string) => fetch(url).then((res) => res.json());
-
 interface EventListProps {
+  events: Event[];
   translations: Record<string, string>;
 }
 
-const EventList: FC<EventListProps> = ({ translations }) => {
-  const { data: events, error } = useSWR('/api/events', fetcher);
-
-  if (error) return <div>Failed to load events</div>;
-  if (!events) return <div>Loading events...</div>;
-
+export default function EventList({ events, translations }: EventListProps) {
   return (
-    <aside className="w-80 p-4 overflow-y-auto">
-      <h2 className="text-xl font-bold mb-4">{translations['events.title']}</h2>
-      <ul>
-        {events.map((event: any) => (
-          <EventCard key={event.id} event={event} />
-        ))}
-      </ul>
-    </aside>
+    <div className="h-full overflow-y-auto p-6 bg-white/90 backdrop-blur-md">
+      <h2 className="text-2xl font-bold mb-6 text-gray-900 flex items-center">
+        <span className="mr-2">⚽</span>
+        {translations['events.title'] || 'Upcoming Events'}
+      </h2>
+      <div className="space-y-3">
+        {events.length > 0 ? (
+          events.map((event) => (
+            <EventCard key={event.id} event={event} translations={translations} />
+          ))
+        ) : (
+          <p className="text-gray-500 text-center py-8">
+            {translations['events.none'] || 'No upcoming events'}
+          </p>
+        )}
+      </div>
+    </div>
   );
-};
-
-export default EventList;
+}
