@@ -2,18 +2,21 @@
 
 import { APIProvider, Map, Marker } from '@vis.gl/react-google-maps';
 import useSWR from 'swr';
-import TransitMarker from './TransitMarker';
+import dynamic from 'next/dynamic';
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 const ATLANTA_CENTER = { lat: 33.7490, lng: -84.3880 };
 
+// Dynamically import the AnimatedTransitMarker with SSR disabled
+const AnimatedTransitMarker = dynamic(() => import('./AnimatedTransitMarker'), {
+  ssr: false,
+});
+
 export default function MapView() {
   const { data: transitData } = useSWR('/api/transit', fetcher, {
-    refreshInterval: 20000,
+    refreshInterval: 5000, // Refresh every 5 seconds
   });
-
-  console.log(transitData);
 
   return (
     <APIProvider apiKey={process.env.NEXT_PUBLIC_GMAK || ''}>
@@ -27,7 +30,7 @@ export default function MapView() {
 
         {/* Bus markers */}
         {transitData?.buses?.map((bus: any) => (
-          <TransitMarker
+          <AnimatedTransitMarker
             key={bus.id}
             latitude={bus.lat}
             longitude={bus.lon}
@@ -37,7 +40,7 @@ export default function MapView() {
 
         {/* Train markers */}
         {transitData?.trains?.map((train: any) => (
-          <TransitMarker
+          <AnimatedTransitMarker
             key={train.id}
             latitude={train.lat}
             longitude={train.lon}

@@ -17,11 +17,13 @@ export async function fetchBusData(): Promise<TransitVehicle[]> {
     const buffer = await response.arrayBuffer();
     const feed = GtfsRealtimeBindings.transit_realtime.FeedMessage.decode(new Uint8Array(buffer));
 
-    const buses: TransitVehicle[] = feed.entity.map((entity) => ({
+    const buses: TransitVehicle[] = feed.entity
+      .filter(entity => entity.vehicle && entity.vehicle.position && entity.vehicle.trip)
+      .map((entity) => ({
       id: entity.id,
-      lat: entity.vehicle.position.latitude,
-      lon: entity.vehicle.position.longitude,
-      route: entity.vehicle.trip.routeId,
+      lat: entity.vehicle!.position!.latitude!,
+      lon: entity.vehicle!.position!.longitude!,
+      route: entity.vehicle!.trip!.routeId! || 'Unknown',
       type: 'bus',
     }));
     return buses;
