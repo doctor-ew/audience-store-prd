@@ -3,10 +3,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { i18n } from '@/i18n/i18n-config';
 import { TranslationProvider } from '@/contexts/TranslationContext';
-import { PrismaClient } from '@prisma/client';
+import { prisma } from '@/lib/prisma';
 import "../globals.css";
-
-const prisma = new PrismaClient();
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

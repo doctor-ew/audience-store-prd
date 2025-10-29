@@ -1,10 +1,8 @@
-import { PrismaClient } from '@prisma/client';
+import { prisma } from '@/lib/prisma';
 import MapView from '@/components/MapView';
 import EventList from '@/components/EventList';
 import { getDictionary } from '@/i18n/get-dictionary';
 import { i18n, Locale } from '@/i18n/i18n-config';
-
-const prisma = new PrismaClient();
 
 export async function generateStaticParams() {
   return i18n.locales.map((locale) => ({ lang: locale }));

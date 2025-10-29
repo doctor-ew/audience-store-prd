@@ -1,5 +1,4 @@
-import { PrismaClient } from '@prisma/client';
-const prisma = new PrismaClient();
+import { prisma } from '@/lib/prisma';
 
 export async function getOrCreateUserProfile(userId: string) {
   return prisma.userProfile.upsert({
