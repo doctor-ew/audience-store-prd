@@ -9,6 +9,10 @@ pnpm config set store-dir /workspaces/.pnpm-store
 
 npm i -g @google/gemini-cli || true
 
+# Install Vercel CLI globally for deployment
+echo "Installing Vercel CLI..."
+npm i -g vercel || echo "⚠️  Vercel CLI install failed, can retry later"
+
 # Auto-install Claude CLI if key present
 if [ -n "$ANTHROPIC_API_KEY" ]; then
   echo "✓ ANTHROPIC_API_KEY found - installing Claude CLI..."

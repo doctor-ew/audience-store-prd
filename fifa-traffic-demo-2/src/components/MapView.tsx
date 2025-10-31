@@ -16,9 +16,13 @@ function TrafficLayer({ enabled }: { enabled: boolean }) {
   const map = useMap();
 
   useEffect(() => {
-    if (!map) return;
+    if (!map || typeof window === 'undefined') return;
 
-    const trafficLayer = new google.maps.TrafficLayer();
+    // @ts-ignore - Google Maps is loaded by the APIProvider
+    if (!window.google) return;
+
+    // @ts-ignore - Google Maps types
+    const trafficLayer = new window.google.maps.TrafficLayer();
 
     if (enabled) {
       trafficLayer.setMap(map);

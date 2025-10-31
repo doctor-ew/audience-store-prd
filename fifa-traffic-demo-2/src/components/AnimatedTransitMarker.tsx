@@ -16,7 +16,7 @@ export default function AnimatedTransitMarker({
 }: AnimatedTransitMarkerProps) {
   const [currentPosition, setCurrentPosition] = useState(position);
   const previousPositionRef = useRef(position);
-  const animationFrameRef = useRef<number>();
+  const animationFrameRef = useRef<number | undefined>(undefined);
 
   useEffect(() => {
     // Don't animate venue markers
